@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html	xmlns:th="http://www.thymeleaf.org"  
+		xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+		layout:decorate="~{layout}">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Users list</title>
+<script src="../../../resources/js/user.js" th:src="@{/resources/js/user.js}"></script>
+</head>
+<body>
+<div layout:fragment="content">
+	<h1>Users</h1>
+	<a href="userForm.html" th:href="@{/users/add}">Add new</a>
+	<table class="table table-bordered table-striped">
+		<thead>
+			<tr>
+				<td>Name</td>
+				<td>Gender</td>
+				<td>Country</td>
+				<td>AboutYou</td>
+				<td>Communities</td>
+				<td>MailingList</td>
+				<td>Acciones</td>
+			</tr>
+		</thead>
+		<tbody>	
+			<tr th:each="user : ${users}" th:attr="data-id=${user.code}">
+				<td th:text="${user.name}" >Juan</td>
+				<td th:text="${user.gender}" >Masculino</td>
+				<td th:text="${user.country}"> Perú </td>
+				<td th:text="${user.aboutYou}">Acerca de</td>
+				<td th:text="${#strings.arrayJoin(user.community, ' ')}">Spring Hibernate Otro</td>
+				<td th:text="${user.mailingList}">Mailing list</td>
+				<td><a href="userForm.html" class="btn btn-default" th:href="@{/users/edit/{id}(id=${user.code})}" >Editar</a> 
+					<button type="button" class="btn btn-danger" name="eliminarButton">Eliminar</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	 <div layout:insert="~{fragments/alert :: alert}" th:with="id='userDeleteModal', header='Confirmar'" th:remove="tag">
+        <th:block layout:fragment="alert-content">
+           		<div class="modal-body" id="myModalBody">&iquest;Desea eliminar el registro?</div>
+	            <div class="modal-footer">
+	            	<button type="button" class="btn btn-default" id="userDeleteModalSiButton">Si</button>
+	                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+	            </div>
+        </th:block>
+    </div>
+</div>
+</body>
+</html>
